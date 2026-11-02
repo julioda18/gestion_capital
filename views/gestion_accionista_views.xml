@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="gestion_accionista_view_tree" model="ir.ui.view">
+        <field name="name">gestion.accionista.tree</field>
+        <field name="model">gestion.accionista</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="nombre"/>
+                <field name="porcentaje" widget="percentage"/>
+                <field name="compania_id" column_invisible="True"/>
+                <field name="gestion_capital_id" column_invisible="True"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

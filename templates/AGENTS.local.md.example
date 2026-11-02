@@ -1,0 +1,15 @@
+# AGENTS.local.md — Personal Rules (NEVER COMMIT)
+# Add to .gitignore: AGENTS.local.md
+
+# From PR feedback (captured the moment it happened — so the agent never repeats it)
+# - New SQS consumers need a DLQ and alarms in the same PR
+# - Use Optional<T> over null returns
+# - Tests for new endpoints must include the auth-failure case
+
+# Personal habits to correct
+# - Stop using console.log; use the project logger
+# - Always update the OpenAPI spec when adding endpoints
+
+# Machine-specific
+# - Local DB is at localhost:5433 (non-standard port)
+# - Docker socket at /var/run/docker.sock (not rootless)

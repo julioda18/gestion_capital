@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="gestion_capital_view_tree" model="ir.ui.view">
+        <field name="name">gestion.capital.tree</field>
+        <field name="model">gestion.capital</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="patrimonio &lt; 0">
+                <field name="create_date"/>
+                <field name="referencia"/>
+                <field name="total_activos" widget="monetary"/>
+                <field name="total_pasivos" widget="monetary"/>
+                <field name="patrimonio" widget="monetary"/>
+                <field name="moneda_id" column_invisible="True"/>
+                <field name="compania_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="gestion_capital_view_form" model="ir.ui.view">
+        <field name="name">gestion.capital.form</field>
+        <field name="model">gestion.capital</field>
+        <field name="arch" type="xml">
+            <form string="Gestión de Capital">
+                <header>
+                    <button name="action_confirmar"
+                            string="Confirmar"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="estado != 'borrador'"/>
+                    <button name="action_borrador"
+                            string="Volver a Borrador"
+                            type="object"
+                            invisible="estado != 'confirmado'"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="borrador,confirmado"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="referencia" placeholder="Referencia"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Activos">
+                            <field name="efectivo" widget="monetary"/>
+                            <field name="cuentas_por_cobrar" widget="monetary"/>
+                            <field name="inventario" widget="monetary"/>
+                            <field name="inversiones" widget="monetary"/>
+                            <field name="propiedades_equipo" widget="monetary"/>
+                        </group>
+                        <group string="Pasivos">
+                            <field name="deudas_bancarias" widget="monetary"/>
+                            <field name="cuentas_por_pagar" widget="monetary"/>
+                            <field name="gastos_acumulados" widget="monetary"/>
+                            <field name="prestamos_largo_plazo" widget="monetary"/>
+                        </group>
+                    </group>
+                    <group string="Resumen">
+                        <group>
+                            <field name="total_activos" widget="monetary" readonly="1"/>
+                            <field name="total_pasivos" widget="monetary" readonly="1"/>
+                            <field name="patrimonio" widget="monetary" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="compania_id" groups="base.group_multi_company"/>
+                            <field name="moneda_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Accionistas" name="accionistas">
+                            <group>
+                                <field name="porcentaje_total"
+                                       string="Participación Total"
+                                       widget="progressbar"
+                                       readonly="1"
+                                       decoration-danger="porcentaje_total &gt; 100"
+                                       decoration-warning="porcentaje_total &lt; 100 and porcentaje_total &gt; 0"
+                                       decoration-success="porcentaje_total == 100"
+                                       options="{'max_value': 100}"/>
+                            </group>
+                            <field name="accionista_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="gestion_capital_view_search" model="ir.ui.view">
+        <field name="name">gestion.capital.search</field>
+        <field name="model">gestion.capital</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Gestión de Capital">
+                <field name="referencia"/>
+                <field name="compania_id"/>
+                <filter string="Fecha de Creación" name="filter_create_date" date="create_date"/>
+                <separator/>
+                <filter string="Patrimonio Negativo" name="filter_patrimonio_negativo"
+                        domain="[('patrimonio', '&lt;', 0)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Fecha de Creación" name="group_create_date"
+                            context="{'group_by': 'create_date'}"/>
+                    <filter string="Compañía" name="group_compania"
+                            context="{'group_by': 'compania_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_gestion_capital" model="ir.actions.act_window">
+        <field name="name">Configuración de Capital</field>
+        <field name="res_model">gestion.capital</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="gestion_capital_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Cree su primera configuración de capital
+            </p>
+            <p>
+                Registre los activos, pasivos y accionistas de la empresa para calcular el patrimonio.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_gestion_capital_root"
+              name="Capital y Acciones"
+              sequence="25"
+              groups="gestion_capital.group_admin_capital"/>
+
+    <menuitem id="menu_gestion_capital_config"
+              name="Configuración de Capital"
+              parent="menu_gestion_capital_root"
+              action="action_gestion_capital"
+              sequence="10"
+              groups="gestion_capital.group_admin_capital"/>
+</odoo>

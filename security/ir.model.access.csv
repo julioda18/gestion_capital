@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_gestion_capital_admin,gestion.capital admin,model_gestion_capital,gestion_capital.group_admin_capital,1,1,1,1
+access_gestion_accionista_admin,gestion.accionista admin,model_gestion_accionista,gestion_capital.group_admin_capital,1,1,1,1
+access_gestion_capital_user,gestion.capital user,model_gestion_capital,base.group_user,0,0,0,0
+access_gestion_accionista_user,gestion.accionista user,model_gestion_accionista,base.group_user,0,0,0,0

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="module_category_gestion_capital" model="ir.module.category">
+            <field name="name">Capital y Acciones</field>
+            <field name="description">Gestión de capital, activos, pasivos y accionistas.</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="group_admin_capital" model="res.groups">
+            <field name="name">Admin de Capital</field>
+            <field name="category_id" ref="module_category_gestion_capital"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">
+                Los usuarios en este grupo tienen acceso completo al módulo de Capital y Acciones.
+            </field>
+        </record>
+    </data>
+</odoo>
